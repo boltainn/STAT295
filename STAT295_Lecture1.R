@@ -25,3 +25,14 @@ data(iris)
 str(iris)
 summary(iris)
 table(iris$Species)
+
+Stats <- aggregate(Sepal.Length ~Species, data=iris,mean)
+Stats
+
+#Visualization
+
+plot(iris$Sepal.Length, col=as.numeric(iris$Species),ylab = "Sepal Length")
+legend("topleft", legend = levels(iris$Species),pch=1:3)
+
+boxplot(Sepal.Length ~ Species, data =iris)
+
