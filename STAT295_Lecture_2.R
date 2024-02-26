@@ -135,14 +135,105 @@ Sys.sleep(3)
 t2 <- Sys.time()
 t2-t1
 
+x <- 5+9
+seq(1,10)
+
+a <- 10
+b <- 5
+sig_sq <- 0.5
+
+x <- runif(100)
+y <- a + b*x+ rnorm(100, sd = sqrt(sig_sq))
+y
 
 
+plot(x,y)
+abline(a,b,col="purple")
+
+#Avoid for Loops
+
+d <- as.data.frame(cbind(runif(10000),runif(10000)))
+d
+head(d)
+
+system.time(for(loop in 1:dim(d)[1]){
+  d$mean2[loop] <-mean(c(d[loop,1],d[loop,2]))
+})
+
+system.time(d$mean1 <- apply(d,1,mean))
+
+timecal <- function(n){
+  a <- numeric(n)
+  for(i in 1:n){
+    a[i] <- 2*pi*sin(i)
+  }
+}
+system.time(timecal(10000000))
+
+timecal2 <- function(n){
+  a <- numeric(n)
+  for(i in 1:n){
+    a[i] <- sin(i)
+  }
+  2*pi*a
+}
+
+system.time(timecal2(10000000))
+
+##Piping. in R |>
+library(tidyverse)
+data(tips, package = "reshape2")
+tips %>% 
+  subset(total_bill>19) %>%
+  aggregate(. ~ sex, .,mean)
+
+tips |>
+  subset(total_bill > 19) |>
+  {function(x) aggregate(. ~ sex, data=x,FUN = mean)}()
+
+tips |>
+  subset(total_bill > 19) |>
+  {\(x) aggregate(. ~ sex, data=x,FUN = mean)}()
 
 
+#x %>% f(1)
+#f(x,1)
+#f(1,x)
+#x %>% f(1,.)
 
+tips %>% 
+  subset(total_bill >19) %>% 
+  aggregate(. ~ day, ., max)
 
+a <- rnorm(10)
+a
+a1 <- abs(a)
+a1
+a2 <- log(a1)
+a2
+a3<-round(a2,1)
+a3
 
+round(log(abs(a)),1)
 
+a %>% abs() %>% 
+  log() %>% round(1)
+
+a %<>% abs() %>% 
+  log() %>% round(1)
+
+assign("a",pi)
+
+"a" %>% assign(20)
+a
+env <- environment()
+"a" %>% assign(20,envir = env)
+a
+
+rnorm(100) %>% 
+  matrix(ncol=2) %T>% 
+  plot() %>% 
+  str()
 
 
 
